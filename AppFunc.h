@@ -13,8 +13,6 @@ using namespace std;
 
 void drawQuad(GLfloat* color, int left, int top, int right, int bottom);
 
-void drawLine(float, float, float, float);
-
 void drawEllipse(GLfloat*, float, float, float, float);
 
 void drawText(GLfloat*, const char*, int, int);

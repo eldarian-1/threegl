@@ -20,7 +20,8 @@ App* App::getInstance(int* argc, char** argv, void (*button)())
 App::App(int* argc, char** argv, void (*button)())
 {
 	this->isStarted = false;
-	this->add((View*)(new Button(0, 0, 100, 20, "Добавить", button)))
+	this->add((View*)(new Button(15, 15, 135, 45, "Добавить", button)))
+		->add((View*)(new Button(15, 60, 135, 90, "Обновить", displayFunc)))
 		->add(13)->add(5)->add(17)->add(15)->add(19)->add(3)->add(7)->add(1)->add(4)->add(2)->add(6)
 		->add(8)->add(10)->add(9)->add(12)->add(11)->add(14)->add(16)->add(18)->add(20);
 
@@ -69,14 +70,15 @@ int App::getLevel()
 
 App* App::draw()
 {
-	this->stack.draw();
 	this->three.draw();
+	this->stack.draw();
+	GLfloat c[3]{ 0,0,0 };
 	return this;
 }
 
 void displayFunc()
 {
-	glClearColor(1, 1, 1, 0);
+	glClearColor(1, 1, 1, 1);
 	glClear(GL_COLOR_BUFFER_BIT);
 	App::getInstance()->draw();
 	glutSwapBuffers();
@@ -96,6 +98,7 @@ void reshapeFunc(int width, int height)
 
 void passiveMotionFunc(int x, int y)
 {
+	App::getInstance()->stack.onMouseMoveAll(x, y);
 	App::getInstance()->three.isNodeFocused(x, y);
 	glutPostRedisplay();
 }

@@ -11,30 +11,19 @@ void drawQuad(GLfloat* color, int left, int top, int right, int bottom)
 	glEnd();
 }
 
-void drawLine(float x1, float y1, float x2, float y2)
-{
-	GLfloat* color = new GLfloat[3]{ 0.0, 0.0, 0.0 };
-	glBegin(GL_LINES);
-	glColor3fv(color);
-	glLineWidth(2);
-	glVertex2f(x1, y1);
-	glVertex2f(x2, y2);
-	glEnd();
-}
-
 void drawEllipse(GLfloat* color, float a, float b, float x, float y)
 {
 	const float step = float(2 * M_PI) / 360;
 
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3fv(color);
-	glVertex2d(x, y);
+	glVertex2f(x, y);
 	for (float angle = 0; angle <= float(2 * M_PI); angle += step)
 	{
 		float t = (fabsf(angle - float(2 * M_PI)) < 0.00001f) ? 0.f : angle;
 		const float dx = a * cosf(t);
 		const float dy = b * sinf(t);
-		glVertex2d((double)dx + x, (double)dy + y);
+		glVertex2f((double)dx + x, (double)dy + y);
 	}
 	glEnd();
 }
@@ -42,14 +31,10 @@ void drawEllipse(GLfloat* color, float a, float b, float x, float y)
 void drawText(GLfloat* color, const char* str, int x, int y)
 {
 	glColor3fv(color);
-	glRasterPos2f(x, y);
-	int i = 0;
-	while (str[i] != '\0')
+	for (int i = 0; str[i] != '\0'; i++)
 	{
-		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str[i]);
-		i++;
 		glRasterPos2f(x + i * 10, y);
-
+		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str[i]);
 	}
 }
 

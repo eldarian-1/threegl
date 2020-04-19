@@ -37,8 +37,10 @@ void Stack::onMouseMoveAll(int x, int y)
 	NodeStack* temp = this->pTop;
 	while (temp != nullptr)
 	{
-		if(temp->data->isFocused(x, y))
+		if (temp->data->isFocused(x, y))
 			temp->data->onFocused(x, y);
+		else
+			temp->data->onUnfocused();
 
 		temp = temp->pLow;
 	}
