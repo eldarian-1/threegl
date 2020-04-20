@@ -1,4 +1,1 @@
-﻿  App.cpp
-C:\Users\Eldarian\source\repos\ThreeOpenGL\Button.h(18,1): warning C4305: инициализация: усечение из "double" в "GLfloat"
-C:\Users\Eldarian\source\repos\ThreeOpenGL\App.cpp(35,86): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-  ThreeOpenGL.vcxproj -> C:\Users\Eldarian\source\repos\ThreeOpenGL\Debug\ThreeOpenGL.exe
+﻿

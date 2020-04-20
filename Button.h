@@ -15,10 +15,11 @@ public:
 		: x1(_x1), y1(_y1), x2(_x2), y2(_y2), text(_text), func(_func), isFocus(false) {}
 
 	void draw();
-	void onClick(int, int);
-	bool isFocused(int, int);
-	void onFocused(int, int);
+
+	void isFocused(int, int, void (View::*)(int, int) = nullptr);
+	void onFocused();
 	void onUnfocused();
+	void onClick(int, int);
 	void onMouseLeftDown(int, int);
 	void onMouseLeftUp(int, int);
 	void onMouseRightDown(int, int);

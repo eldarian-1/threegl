@@ -1,2 +1,0 @@
-C:\Users\Eldarian\source\repos\ThreeOpenGL\Debug\ThreeOpenGL.exe
-C:\Users\Eldarian\source\repos\ThreeOpenGL\Debug\ThreeOpenGL.pdb

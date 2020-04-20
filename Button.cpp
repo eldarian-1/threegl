@@ -23,18 +23,18 @@ void Button::draw()
 	drawText(color, this->text, x, y);
 }
 
-void Button::onClick(int x, int y)
+void Button::isFocused(int x, int y, void (View::* func)(int, int))
 {
-	//printf("Button: onClick on x: %d, y: %d\n", x, y);
-	this->func();
+	if (x >= this->x1 && x <= this->x2 && y >= this->y1 && y <= this->y2)
+		if (func == nullptr)
+			this->onFocused();
+		else
+			(this->*((void (Button::*)(int, int))(func)))(x, y);
+	else
+		this->onUnfocused();
 }
 
-bool Button::isFocused(int x, int y)
-{
-	return (x >= this->x1 && x <= this->x2 && y >= this->y1 && y <= this->y2);
-}
-
-void Button::onFocused(int x, int y)
+void Button::onFocused()
 {
 	isFocus = true;
 	//printf("Button: onFocused on x: %d, y: %d\n", x, y);
@@ -44,6 +44,12 @@ void Button::onUnfocused()
 {
 	isFocus = false;
 	//printf("Button: onFocused on x: %d, y: %d\n", x, y);
+}
+
+void Button::onClick(int x, int y)
+{
+	//printf("Button: onClick on x: %d, y: %d\n", x, y);
+	this->func();
 }
 
 void Button::onMouseLeftDown(int x, int y)

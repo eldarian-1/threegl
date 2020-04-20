@@ -2,26 +2,18 @@
 
 #include "Button.h"
 
-struct NodeStack
-{
-	View* data;
-	NodeStack* pLow;
-};
-
 class Stack
 {
 private:
-	NodeStack* pTop;
+	struct Node {
+		Node* pLow = nullptr;
+		Button* data = nullptr;
+	}* pTop;
 
 public:
-	Stack() : pTop(nullptr) {}
-	void add(View*);
-	void draw();
+	Stack() : pTop(nullptr){}
 
-	void onMouseMoveAll(int, int);
-	void onMouseLeftDownAll(int, int);
-	void onMouseLeftUpAll(int, int);
-	void onClickAll(int, int);
-	void onMouseRightDownAll(int, int);
-	void onMouseRightUpAll(int, int);
+	void add(Button*);
+	void draw();
+	void isFocused(int, int, void (View::*)(int, int) = nullptr);
 };
