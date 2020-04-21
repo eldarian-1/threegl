@@ -30,10 +30,10 @@ App::App(int* argc, char** argv, void (*button)())
 
 	int app_width = glutGet(GLUT_SCREEN_WIDTH);
 	int app_height = glutGet(GLUT_SCREEN_HEIGHT);
-	cout << "Screen: width = " << app_width << ", height = " << app_height << "\nLevel: " << this->three.getLevel() << endl;
+	cout << "Screen: width = " << app_width << ", height = " << app_height << endl;
 
 	glutInitWindowSize(APP_WIDTH, APP_HEIGHT);
-	glutInitWindowPosition((app_width - APP_WIDTH) / 2, (app_height - APP_HEIGHT * 1.3) / 2);
+	glutInitWindowPosition((app_width - APP_WIDTH) / 2, int(app_height - APP_HEIGHT * 1.3) / 2);
 	glutCreateWindow("Three with OpenGL");
 }
 

@@ -17,13 +17,13 @@ void drawEllipse(GLfloat* color, float a, float b, float x, float y)
 
 	glBegin(GL_TRIANGLE_FAN);
 	glColor3fv(color);
-	glVertex2f(x, y);
+	glVertex2d(x, y);
 	for (float angle = 0; angle <= float(2 * M_PI); angle += step)
 	{
 		float t = (fabsf(angle - float(2 * M_PI)) < 0.00001f) ? 0.f : angle;
 		const float dx = a * cosf(t);
 		const float dy = b * sinf(t);
-		glVertex2f((double)dx + x, (double)dy + y);
+		glVertex2d((double)dx + x, (double)dy + y);
 	}
 	glEnd();
 }
@@ -33,7 +33,7 @@ void drawText(GLfloat* color, const char* str, int x, int y)
 	glColor3fv(color);
 	for (int i = 0; str[i] != '\0'; i++)
 	{
-		glRasterPos2f(x + i * 10, y);
+		glRasterPos2i(x + i * 10, y);
 		glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str[i]);
 	}
 }

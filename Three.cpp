@@ -1,26 +1,16 @@
 #include "Three.h"
 
-Three::Node* Three::Node::instance = nullptr;
-
-MyType Three::getLevel()
-{
-	return this->level;
-}
+Three::Node* Three::instance = nullptr;
 
 Three& Three::add(const MyType& data)
 {
 	if (this->pTop == nullptr)
-	{
 		this->pTop = new Node{ nullptr, nullptr, nullptr, data };
-		this->level = 1;
-	}
 	else
 	{
 		Three::Node* temp = this->pTop;
-		int level = 1;
 		while (true)
 		{
-			++level;
 			if (data < temp->data)
 			{
 				if (temp->pLeft == nullptr)
@@ -44,30 +34,34 @@ Three& Three::add(const MyType& data)
 			else if (data == temp->data)
 				break;
 		}
-		if (level > this->level)
-			this->level = level;
-		int digit = 0, temp0 = data;
-		while (temp0 != 0)
-		{
-			temp0 /= 10;
-			++digit;
-		}
-		if (digit > this->digit)
-			this->digit = digit;
 	}
+	this->setLevel(false);
+	this->setDigit(false);
 	return *this;
 }
 
 void Three::del(const MyType& data)
 {
 	Node* temp = this->pTop;
-	if (temp->data == data)
+	if ((temp->data == data) && (temp->pLeft != nullptr) && (temp->pRight != nullptr))
 	{
 		this->clear();
-		return;
 	}
-	if (temp == nullptr)
-		cout << "Искомый узел не существует\n";
+	else if ((temp->data == data) && (temp->pLeft == nullptr) && (temp->pRight != nullptr))
+	{
+		this->pTop = temp->pRight;
+		delete temp;
+	}
+	else if ((temp->data == data) && (temp->pLeft != nullptr) && (temp->pRight == nullptr))
+	{
+		this->pTop = temp->pLeft;
+		delete temp;
+	}
+	else if ((temp->data == data) && (temp->pLeft == nullptr) && (temp->pRight == nullptr))
+	{
+		this->pTop = nullptr;
+		delete temp;
+	}
 	else
 	{
 		int level = 1;
@@ -147,6 +141,61 @@ void Three::del(const MyType& data)
 			}
 		}
 	}
+	this->setLevel(true);
+	this->setDigit(true);
+}
+
+void Three::setLevel(bool isDel, Node* temp, int level)
+{
+	if (this->pTop == nullptr)
+	{
+		this->level = 0;
+		return;
+	}
+
+	if (temp == nullptr)
+		temp = this->pTop;
+
+	if (isDel)
+		this->level = 0;
+
+	++level;
+
+	if (temp->pLeft != nullptr)
+		setLevel(false, temp->pLeft, level);
+
+	if (temp->pRight != nullptr)
+		setLevel(false, temp->pRight, level);
+
+	if ((temp->pLeft == nullptr) && (temp->pRight == nullptr) && (level > this->level))
+		this->level = level;
+}
+
+void Three::setDigit(bool isDel, Node* temp)
+{
+	if (this->pTop == nullptr)
+	{
+		this->digit = 0;
+		return;
+	}
+
+	if (temp == nullptr)
+		temp = this->pTop;
+
+	if (isDel)
+		this->digit = 0;
+
+	int digit = 0;
+	for (int t = temp->data; t != 0; ++digit, t /= 10);
+
+	if (temp->pLeft != nullptr)
+		setDigit(false, temp->pLeft);
+
+	if (temp->pRight != nullptr)
+		setDigit(false, temp->pRight);
+
+	if ((temp->pLeft == nullptr) && (temp->pRight == nullptr) && (digit > this->digit))
+		this->digit = digit;
 }
 
 void Three::clear(Node* temp)
@@ -177,18 +226,18 @@ void Three::draw(int hpos, int vpos, Node* temp)
 	if (temp == nullptr)
 		temp = this->pTop;
 
-	int h_pos = SHIFT + (APP_WIDTH - 2 * SHIFT) / (pow(2, vpos - 1) + 1) * hpos;
+	int h_pos = SHIFT + (APP_WIDTH - 2 * SHIFT) / int(pow(2, vpos - 1) + 1) * hpos;
 	int v_pos = SHIFT + (APP_HEIGHT - 2 * SHIFT) / (level + 1) * vpos;
 	char text[10];
 	myitoa(temp->data, text, 10);
 
 	//int a = (strlen(text) + 2) * 5;
 	//int b = 20;
-	int r = digit * 6 + 5;
+	int r = this->digit * 6 + 5;
 
 	if (vpos != 1)
 	{
-		glVertex2f(h_pos, v_pos);
+		glVertex2i(h_pos, v_pos);
 		glEnd();
 	}
 
@@ -198,7 +247,7 @@ void Three::draw(int hpos, int vpos, Node* temp)
 		glBegin(GL_LINES);
 		glColor3fv(color);
 		glLineWidth(2);
-		glVertex2f(h_pos, v_pos);
+		glVertex2i(h_pos, v_pos);
 		//glVertex2f(h_pos, v_pos + b);
 		this->draw(hpos * 2 - 1, vpos + 1, temp->pLeft);
 	}
@@ -209,24 +258,24 @@ void Three::draw(int hpos, int vpos, Node* temp)
 		glBegin(GL_LINES);
 		glColor3fv(color);
 		glLineWidth(2);
-		glVertex2f(h_pos, v_pos);
+		glVertex2i(h_pos, v_pos);
 		//glVertex2f(h_pos, v_pos + b);
 		this->draw(hpos * 2, vpos + 1, temp->pRight);
 	}
 
 	GLfloat color[] = { 0.0, 0.0, 0.0 };
 	//drawEllipse(color, a, b, h_pos, v_pos);
-	drawEllipse(color, r, r, h_pos, v_pos);
+	drawEllipse(color, (float)r, (float)r, (float)h_pos, (float)v_pos);
 
 	if (temp->isFocus)
 	{
-		color[0] = 0.9;
-		color[1] = color[2] = 1.0;
+		color[0] = 0.9f;
+		color[1] = color[2] = 1.0f;
 	}
 	else
-		color[0] = color[1] = color[2] = 0.9;
+		color[0] = color[1] = color[2] = 0.9f;
 	//drawEllipse(color, a - 1, b - 1, h_pos, v_pos);
-	drawEllipse(color, r - 1, r - 1, h_pos, v_pos);
+	drawEllipse(color, float(r - 1), float(r - 1), (float)h_pos, (float)v_pos);
 
 	color[0] = color[1] = color[2] = 0.0;
 	drawText(color, text, h_pos - strlen(text) * 5, v_pos + r / 4);
@@ -240,16 +289,17 @@ void Three::run(int x, int y, void (Three::* func)(int, int), int hpos, int vpos
 	if (temp == nullptr)
 		temp = this->pTop;
 
-	int h_pos = SHIFT + (APP_WIDTH - 2 * SHIFT) / (pow(2, vpos - 1) + 1) * hpos;
+	int h_pos = SHIFT + (APP_WIDTH - 2 * SHIFT) / int(pow(2, vpos - 1) + 1) * hpos;
 	int v_pos = SHIFT + (APP_HEIGHT - 2 * SHIFT) / (level + 1) * vpos;
 	char text[15];
 	myitoa(temp->data, text, 10);
-	int a = (strlen(text) + 2) * 5;
-	int b = 20;
+	//int a = (strlen(text) + 2) * 5;
+	//int b = 20;
+	int r = this->digit * 6 + 5;
 
-	Node::instance = temp;
+	Three::instance = temp;
 
-	if (pow(h_pos - x, 2) / pow(a, 2) + pow(v_pos - y, 2) / pow(b, 2) <= 1.0)
+	if (pow(h_pos - x, 2) / pow(r, 2) + pow(v_pos - y, 2) / pow(r, 2) <= 1.0)
 	{
 		if (func == nullptr)
 			this->onFocused();
@@ -277,20 +327,20 @@ void Three::isFocused(int x, int y, void (View::*func)(int, int))
 
 void Three::onFocused()
 {
-	Node::instance->isFocus = true;
+	Three::instance->isFocus = true;
 	//printf("Three: onFocused\n");
 }
 
 void Three::onUnfocused()
 {
-	Node::instance->isFocus = false;
+	Three::instance->isFocus = false;
 	//printf("Three: onUnfocused");
 }
 
 void Three::onClick(int x, int y)
 {
 	//printf("Three: onClick on x: %d, y: %d\n", x, y);
-	this->del(Node::instance->data);
+	this->del(Three::instance->data);
 	
 }
 

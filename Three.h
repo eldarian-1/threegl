@@ -10,8 +10,6 @@ private:
 
 	struct Node
 	{
-		static Node* instance;
-
 		Node* pParent = nullptr;
 		Node* pLeft = nullptr;
 		Node* pRight = nullptr;
@@ -19,15 +17,18 @@ private:
 		bool isFocus = false;
 	};
 
+	static Node* instance;
+
 	Node* pTop;
 	int level;
 	int digit;
 
+	void setLevel(bool, Node* = nullptr, int = 0);
+	void setDigit(bool, Node* = nullptr);
 
 public:
 	Three() : pTop(nullptr), level(0), digit(0) {};
 
-	MyType getLevel();
 	Three& add(const MyType&);
 	void del(const MyType&);
 	void clear(Node* = nullptr);

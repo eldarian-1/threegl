@@ -7,19 +7,19 @@ void Button::draw()
 
 	if (isFocus)
 	{
-		color[0] = 0.9;
-		color[1] = color[2] = 1.0;
+		color[0] = 0.9f;
+		color[1] = color[2] = 1.0f;
 	}
 	else
-		color[0] = color[1] = color[2] = 0.9;
+		color[0] = color[1] = color[2] = 0.9f;
 	drawQuad(color, x1+1, y1+1, x2-1, y2-1);
 
 	int size = strlen(this->text);
 
 	int x = x1 + (x2 - x1 - size * 10) / 2;
-	int y = y2 - (y2 - y1 - 20) / 1.5;
+	int y = y2 - int((y2 - y1 - 20) / 1.5);
 
-	color[0] = color[1] = color[2] = 0.5;
+	color[0] = color[1] = color[2] = 0.5f;
 	drawText(color, this->text, x, y);
 }
 
