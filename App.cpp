@@ -10,18 +10,20 @@ void reshapeFunc(int, int);
 void passiveMotionFunc(int, int);
 void mouseFunc(int, int, int, int);
 
-App* App::getInstance(int* argc, char** argv, void (*button)())
+App* App::getInstance(int* argc, char** argv, Control* ctrl, int size)
 {
 	if (instance == 0)
-		instance = new App(argc, argv, button);
+		instance = new App(argc, argv, ctrl, size);
 	return instance;
 }
 
-App::App(int* argc, char** argv, void (*button)())
+App::App(int* argc, char** argv, Control* ctrl, int size)
 {
 	this->isStarted = false;
-	this->stack.add(new Button(15, 15, 135, 45, "Добавить", button));
-	this->stack.add(new Button(15, 60, 135, 90, "Обновить", displayFunc));
+
+	for(int i = 0; i < size; i++)
+		this->stack.add(new Button(ctrl[i]));
+
 	this->three.add(13).add(5).add(17).add(15).add(19).add(3).add(7).add(1).add(4).add(2)
 		.add(6).add(8).add(10).add(9).add(12).add(11).add(14).add(16).add(18).add(20);
 
@@ -50,9 +52,24 @@ void App::start()
 	}
 }
 
-void App::add(MyType data)
+void App::addNum(MyType data)
 {
 	this->three.add(data);
+}
+
+void App::delNum(MyType data)
+{
+	this->three.del(data);
+}
+
+int App::findNum(MyType data)
+{
+	return this->three.find(data);
+}
+
+int App::getLevel()
+{
+	return this->three.getLevel();
 }
 
 void App::draw()

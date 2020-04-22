@@ -12,15 +12,19 @@ private:
 	Stack stack;
 	bool isStarted;
 
-	App(int*, char**, void (*button)());
+	App(int*, char**, Control*, int);
 
 	void draw();
 
 public:
-	static App* getInstance(int* argc = nullptr, char** argv = nullptr, void (*button)() = nullptr);
+	static App* getInstance(int* = nullptr, char** = nullptr, Control* = nullptr, int = 0);
 
 	void start();
-	void add(MyType);
+
+	void addNum(MyType);
+	void delNum(MyType);
+	int findNum(MyType);
+	int getLevel();
 
 	friend void displayFunc();
 	friend void reshapeFunc(int, int);

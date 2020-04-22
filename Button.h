@@ -2,6 +2,13 @@
 
 #include "View.h"
 
+struct Control
+{
+	int x1, y1, x2, y2;
+	const char* text;
+	void (*func)();
+};
+
 class Button : public View
 {
 private:
@@ -11,8 +18,8 @@ private:
 	bool isFocus;
 
 public:
-	Button(int _x1, int _y1, int _x2, int _y2, const char* _text, void (*_func)())
-		: x1(_x1), y1(_y1), x2(_x2), y2(_y2), text(_text), func(_func), isFocus(false) {}
+	Button(Control btn)
+		: x1(btn.x1), y1(btn.y1), x2(btn.x2), y2(btn.y2), text(btn.text), func(btn.func), isFocus(false) {}
 
 	void draw();
 

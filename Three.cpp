@@ -218,6 +218,33 @@ void Three::clear(Node* temp)
 	delete temp;
 }
 
+int Three::find(MyType num)
+{
+	Node* temp = this->pTop;
+	int level = 0;
+
+	if (temp == nullptr)
+		return -228;
+
+	while (true)
+	{
+		++level;
+		if (temp->data == num)
+			return level;
+		else if ((temp->data > num) && (temp->pLeft != nullptr))
+			temp = temp->pLeft;
+		else if ((temp->data < num) && (temp->pRight != nullptr))
+			temp = temp->pRight;
+		else
+			return -228;
+	}
+}
+
+int Three::getLevel()
+{
+	return this->level;
+}
+
 void Three::draw(int hpos, int vpos, Node* temp)
 {
 	if (this->pTop == nullptr)

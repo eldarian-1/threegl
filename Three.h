@@ -32,6 +32,8 @@ public:
 	Three& add(const MyType&);
 	void del(const MyType&);
 	void clear(Node* = nullptr);
+	int find(MyType);
+	int getLevel();
 
 	void draw(int = 1, int = 1, Node* = nullptr);
 	void run(int, int, void (Three::* func)(int, int) = nullptr, int = 1, int = 1, Node* = nullptr);

@@ -17,9 +17,9 @@ void Button::draw()
 	int size = strlen(this->text);
 
 	int x = x1 + (x2 - x1 - size * 10) / 2;
-	int y = y2 - int((y2 - y1 - 20) / 1.5);
+	int y = y2 - int((y2 - y1 - 13) / 1.5);
 
-	color[0] = color[1] = color[2] = 0.5f;
+	color[0] = color[1] = color[2] = 0.0f;
 	drawText(color, this->text, x, y);
 }
 
